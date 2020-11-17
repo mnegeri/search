@@ -1,4 +1,4 @@
-package vsr
+package index 
 
 import (
     "fmt"

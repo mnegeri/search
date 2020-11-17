@@ -1,4 +1,4 @@
-package vsr
+package document 
 
 import (
     "io/ioutil"
