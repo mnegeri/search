@@ -1,8 +1,9 @@
 package document 
 
 import (
-    "io/ioutil"
-    "os"
+   // "io/ioutil"
+    //"os"
+    "fmt"
 )
 
 type Document struct {
