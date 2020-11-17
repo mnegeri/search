@@ -3,7 +3,7 @@ package vsr
 import (
     "fmt"
     "io/ioutil"
-    "github.com/mnegeri/search/document"
+    //"github.com/mnegeri/search/document"
 )
 
 type InvertedIndex struct {
