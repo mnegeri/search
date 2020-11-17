@@ -11,5 +11,5 @@ type Document struct {
 }
 
 func (doc Document) Test() {
-    fmt.Println(name)
+    fmt.Println(doc.name)
 }
