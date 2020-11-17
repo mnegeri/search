@@ -7,9 +7,9 @@ import (
 )
 
 type Document struct {
-    name string 
+    Name string 
 }
 
 func (doc Document) Test() {
-    fmt.Println(doc.name)
+    fmt.Println(doc.Name)
 }
