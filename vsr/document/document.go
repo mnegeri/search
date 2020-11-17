@@ -10,6 +10,6 @@ type Document struct {
     name string 
 }
 
-func (doc Document) test() {
+func (doc Document) Test() {
     fmt.Println(name)
 }
