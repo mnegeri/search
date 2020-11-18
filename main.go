@@ -1,9 +1,9 @@
 package main
 
 import ( 
-    "fmt"
-    "os"
-    "github.com/mnegeri/search/tree/main/vsr/document.go"
+    //"fmt"
+    //"os"
+    "github.com/mnegeri/search/vsr/document"
 )
 
 func main() {
@@ -19,6 +19,6 @@ func main() {
             html := true
         } 
     } */
-    test = document.Document{"Milki"}
-    test.test()
+    test := document.Document{"Milki"}
+    test.Test()
 }
