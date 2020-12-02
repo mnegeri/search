@@ -3,7 +3,7 @@ package main
 import ( 
     //"fmt"
     //"os"
-    "github.com/mnegeri/search/vsr/document"
+    "github.com/mnegeri/search/vsr"
 )
 
 func main() {
@@ -19,6 +19,6 @@ func main() {
             html := true
         } 
     } */
-    test := document.Document{"Milki"}
-    test.Test()
+    //test := document.Document{"Milki"}
+    //test.Test()
 }
