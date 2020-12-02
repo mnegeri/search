@@ -1,8 +1,8 @@
 package vsr 
 
 import (
-    "fmt"
-    "io/ioutil"
+    //"fmt"
+    //"io/ioutil"
     //"github.com/mnegeri/search/document"
 )
 
@@ -13,11 +13,11 @@ type InvertedIndex struct {
 }
 
 func (i InvertedIndex) Process() {
-    files, err := ioutil.ReadDir(dir)
-    if (err != nill) {
-        log.Fatal(err)
+    /*files, err := ioutil.ReadDir(dir)
+    if (err != nil) {
+        panic(err) 
     }
     for _, file := range files {
         fmt.Println(file.Name())
-    }
+    } */
 }

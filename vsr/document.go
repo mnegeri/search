@@ -1,7 +1,6 @@
 package vsr 
 
 import (
-   // "io/ioutil"
    "bufio"
     "os"
     "fmt"
@@ -13,7 +12,7 @@ type Document struct {
 }
 
 
-func (doc Document) loadStopWords() {
+func (doc Document) LoadStopWords() {
     stopWords := make(map[string]bool)
     file, err := os.Open("stop_words.txt")
     if err != nil {
