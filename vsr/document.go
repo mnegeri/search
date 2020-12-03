@@ -8,23 +8,24 @@ import (
 
 type Document struct {
     Name string 
-    stopWords map[string]bool
+    StopWords map[string]bool
 }
 
 
-func (doc Document) LoadStopWords() {
-    stopWords := make(map[string]bool)
+func (doc *Document) LoadStopWords() {
     file, err := os.Open("stop_words.txt")
     if err != nil {
         panic(err)
     }
     scanner := bufio.NewScanner(file)
     for scanner.Scan() {
-        stopWords[scanner.Text()] = true
+        word := scanner.Text()
+        fmt.Println(word)
+        doc.StopWords[word] = true
     }
     file.Close()
 }
 
-func (doc Document) Test() {
+func (doc *Document) Test() {
     fmt.Println(doc.Name)
 }
