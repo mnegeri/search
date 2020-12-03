@@ -13,7 +13,7 @@ type Document struct {
 
 
 func (doc *Document) LoadStopWords() {
-    file, err := os.Open("stop_words.txt")
+    file, err := os.Open("vsr/stop_words.txt")
     if err != nil {
         panic(err)
     }

@@ -4,11 +4,14 @@ package main
 import ( 
     "fmt"
     //"os"
-    //"github.com/mnegeri/search/vsr"
+    "github.com/mnegeri/search/vsr"
 )
 
 func main() {
     fmt.Println("test")
+    doc := vsr.Document{"hello", make(map[string]bool)}
+    doc.LoadStopWords()
+    fmt.Println(doc.StopWords["and"])
     /*args := os.Args[1:]
     dir := args[len(args) - 1]
     var stem bool
