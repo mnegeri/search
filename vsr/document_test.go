@@ -12,3 +12,4 @@ func TestLoadStopWords(t *testing.T) {
         t.Errorf("stop word \"and\" is not present")
     }
 }
+

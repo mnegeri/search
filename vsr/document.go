@@ -1,14 +1,15 @@
 package vsr 
 
 import (
-   //"bufio"
-    //"os"
+    "bufio"
+    "os"
     "fmt"
     "strings"
 )
 
 type Document struct {
-    Name string 
+    //FilePath must be the absolute path
+    FilePath string 
     StopWords map[string]bool
 }
 
@@ -33,6 +34,23 @@ func (doc *Document) LoadStopWords() {
     }
 }
 
+func (doc *Document) HashMapVector() *Vector {
+    file, err := os.Open(doc.FilePath)
+    if err != nil {
+        panic(err)
+    }
+    vector := Vector{make(map[string]int)}
+    scanner := bufio.NewScanner(file)
+    for scanner.Scan() {
+        token := scanner.Text()
+        if !doc.StopWords[token] {
+            vector.Add(token)
+        }
+    }
+    file.Close() 
+    return &vector
+}
+
 func (doc *Document) Test() {
-    fmt.Println(doc.Name)
+    fmt.Println(doc.FilePath)
 }
