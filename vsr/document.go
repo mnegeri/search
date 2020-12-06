@@ -16,6 +16,10 @@ type Document struct {
 const stopwords = `a an and are as at be by for from has he in is it its of on that the to was were will with`
 
 
+func (doc *Document) Create() {
+    doc.LoadStopWords()
+}
+
 func (doc *Document) LoadStopWords() {
     /*file, err := os.Open("vsr/stop_words.txt")
     if err != nil {
@@ -43,6 +47,7 @@ func (doc *Document) HashMapVector() *Vector {
     scanner := bufio.NewScanner(file)
     for scanner.Scan() {
         token := scanner.Text()
+        strings.ToLower(token)
         if !doc.StopWords[token] {
             vector.Add(token)
         }
