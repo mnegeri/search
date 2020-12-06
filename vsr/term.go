@@ -1,13 +1,13 @@
 package vsr
 
 
-
 type TermData struct {
-    Idf uint64
     InstanceList []TermInstance
+    Idf uint64
 }
 
 
 type TermInstance struct {
+    Doc Document
     Count int
 }
