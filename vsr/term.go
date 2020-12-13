@@ -3,7 +3,7 @@ package vsr
 
 type TermData struct {
     InstanceList []TermInstance
-    Idf uint64
+    Idf float64 
 }
 
 

@@ -9,7 +9,7 @@ import (
 
 func main() {
     fmt.Println("test")
-    doc := vsr.Document{"hello", make(map[string]bool)}
+    doc := vsr.Document{"hello", 0, make(map[string]bool)}
     doc.LoadStopWords()
     fmt.Println(doc.StopWords["and"])
     /*args := os.Args[1:]

@@ -10,6 +10,7 @@ import (
 type Document struct {
     //FilePath must be the absolute path
     FilePath string 
+    VectorLength float64
     StopWords map[string]bool
 }
 
