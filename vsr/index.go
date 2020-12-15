@@ -111,5 +111,7 @@ func (index *InvertedIndex) addTermToIndex(term string, retrievals map[Document]
 }
 
 func PrintResults(results []Document) {
-
+    for _, doc := range results {
+        fmt.Println(doc.FilePath)
+    }
 }
