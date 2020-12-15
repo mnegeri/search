@@ -9,5 +9,5 @@ type TermData struct {
 
 type TermInstance struct {
     Doc Document
-    Count int
+    Count float64 
 }

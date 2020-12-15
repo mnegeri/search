@@ -23,7 +23,7 @@ func (index *InvertedIndex) ProcessDocuments() {
     }
     for _, file := range files {
         fmt.Println(file.Name())
-        doc := Document{filepath.Join(index.Dir, file.Name()), 0,  make(map[string]bool)}
+        doc := Document{filepath.Join(index.Dir, file.Name()), "",  0, 0}
         //vector := doc.HashMapVector()
         index.indexDoc(doc)
     } 
@@ -68,4 +68,48 @@ func (index *InvertedIndex) computeIDFandVectorLength() {
     for i, doc := range index.IndexedDocs { 
         index.IndexedDocs[i].VectorLength = math.Sqrt(doc.VectorLength)
     }
+}
+
+
+
+func (index *InvertedIndex) RetrieveDocs(query *Document) []Document {
+    queryVector := query.HashMapVector()
+    //hashmap to store the documents that are retrieved and their partially accumulated
+    //scores(cosine similarity)
+    retrievals := make(map[Document]float64)
+    queryLength := 0.0
+    for term, count := range queryVector.HashMap {
+        queryLength += index.addTermToIndex(term, retrievals, count) 
+    }
+    queryLength = math.Sqrt(queryLength)
+    result := make([]Document, 0)
+
+    for doc, value := range retrievals {
+        //normalize similarity score
+        doc.SimilarityScore = value / (queryLength * doc.VectorLength) 
+        result = append(result, doc) 
+    }
+    return result
+}
+
+func (index *InvertedIndex) addTermToIndex(term string, retrievals map[Document]float64, count float64) float64 {
+    termData, present := index.TermHashMap[term]
+    if present {
+        tfIdf := termData.Idf * count
+        //loop through each document instance in which the term occurs
+        for _, instance := range termData.InstanceList {
+            _, present :=  retrievals[instance.Doc]
+            if !present {
+                retrievals[instance.Doc] = 0
+            }
+            retrievals[instance.Doc] += tfIdf * termData.Idf * instance.Count
+        }
+        return tfIdf * tfIdf
+    } else {
+        return 0.0
+    }
+}
+
+func PrintResults(results []Document) {
+
 }

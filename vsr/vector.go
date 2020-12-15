@@ -1,7 +1,7 @@
 package vsr
 
 type Vector struct {
-    HashMap map[string]int
+    HashMap map[string]float64
 }
 
 func (v *Vector) Add(token string) {
