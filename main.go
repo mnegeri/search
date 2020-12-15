@@ -22,7 +22,7 @@ func main() {
     for cont {
         fmt.Println("Enter search query: ")
         query, _ := reader.ReadString('\n')
-        results := index.RetrieveDocs(&vsr.Document{"", query, 0, make(map[string]bool), 0})
+        results := index.RetrieveDocs(&vsr.Document{"", query, 0, 0})
         vsr.PrintResults(results)
         fmt.Println("Press y to continue: ")
         resp, _ := reader.ReadString('\n')

@@ -5,7 +5,7 @@ import (
 )
 
 func TestLoadStopWords(t *testing.T) {
-    doc := Document{"stop_words.txt", 0, make(map[string]bool)}
+    doc := Document{"stop_words.txt", "", 0 , 0}
     doc.LoadStopWords()
     _, ok := doc.StopWords["and"]
     if !ok {

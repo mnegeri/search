@@ -10,18 +10,16 @@ import (
 type Document struct {
     //FilePath must be the absolute path
     FilePath string 
+    StringText string
     VectorLength float64
-    StopWords map[string]bool
+    //StopWords map[string]bool
+    SimilarityScore float64
 }
 
 const stopwords = `a an and are as at be by for from has he in is it its of on that the to was were will with`
 
 
-func (doc *Document) Create() {
-    doc.LoadStopWords()
-}
-
-func (doc *Document) LoadStopWords() {
+func LoadStopWords() map[string]bool {
     /*file, err := os.Open("vsr/stop_words.txt")
     if err != nil {
         panic(err)
@@ -34,27 +32,39 @@ func (doc *Document) LoadStopWords() {
     }
     file.Close() */
     words := strings.Fields(stopwords)
+    stopWords := make(map[string]bool)
     for _, word := range words {
-        doc.StopWords[word] = true
+        stopWords[word] = true
     }
+    return stopWords
 }
 
 func (doc *Document) HashMapVector() *Vector {
-    file, err := os.Open(doc.FilePath)
-    if err != nil {
-        panic(err)
-    }
-    vector := Vector{make(map[string]int)}
-    scanner := bufio.NewScanner(file)
-    for scanner.Scan() {
-        token := scanner.Text()
-        strings.ToLower(token)
-        if !doc.StopWords[token] {
-            vector.Add(token)
+    stopWords := LoadStopWords()
+    if (doc.StringText != "") {
+        file, err := os.Open(doc.FilePath)
+        if err != nil {
+            panic(err)
         }
+        vector := Vector{make(map[string]float64)}
+        scanner := bufio.NewScanner(file)
+        for scanner.Scan() {
+            token := scanner.Text()
+            strings.ToLower(token)
+            if !stopWords[token] {
+                vector.Add(token)
+            }
+        }
+        file.Close() 
+        return &vector
+    } else {
+        vector := Vector{make(map[string]float64)}
+        terms := strings.Fields(doc.StringText) 
+        for _, term := range terms {
+            vector.Add(term)
+        }
+        return &vector
     }
-    file.Close() 
-    return &vector
 }
 
 func (doc *Document) Test() {
