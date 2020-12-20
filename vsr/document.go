@@ -1,3 +1,5 @@
+//Package vsr provides structures and methods for developing an 
+//information retrieval system using a vector space model.
 package vsr 
 
 import (
