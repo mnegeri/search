@@ -7,9 +7,10 @@ import (
     "io/ioutil"
     "path/filepath"
     "math"
+    "sort"
 )
 
-//InvertedIndex 
+//InvertedIndex represents an inverted index constructed from documents in a directory. 
 type InvertedIndex struct {
     //Html bool
     Dir string
@@ -17,6 +18,7 @@ type InvertedIndex struct {
     TermHashMap map[string]TermData
 }
 
+//ProcessDocuments loops through documents in a directory and builds an inverted index.
 func (index *InvertedIndex) ProcessDocuments() {
     files, err := ioutil.ReadDir(index.Dir)
     if (err != nil) {
@@ -30,6 +32,7 @@ func (index *InvertedIndex) ProcessDocuments() {
     } 
 }
 
+//indexDoc adds a document to the inverted index
 func (index *InvertedIndex) indexDoc(doc Document) {
     index.IndexedDocs = append(index.IndexedDocs, doc)
     vector := doc.HashMapVector()
@@ -72,7 +75,8 @@ func (index *InvertedIndex) computeIDFandVectorLength() {
 }
 
 
-
+//RetrieveDocs takes a query and return an array of documents in the 
+//order of their relevance.
 func (index *InvertedIndex) RetrieveDocs(query *Document) []Document {
     queryVector := query.HashMapVector()
     //hashmap to store the documents that are retrieved and their partially accumulated
@@ -90,6 +94,9 @@ func (index *InvertedIndex) RetrieveDocs(query *Document) []Document {
         doc.SimilarityScore = value / (queryLength * doc.VectorLength) 
         result = append(result, doc) 
     }
+    sort.Slice(result, func(i, j int) bool {
+        return result[i].SimilarityScore < result[j].SimilarityScore
+    })
     return result
 }
 

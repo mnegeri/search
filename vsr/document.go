@@ -9,6 +9,7 @@ import (
     "strings"
 )
 
+//Document represents a file document.
 type Document struct {
     //FilePath must be the absolute path
     FilePath string 
@@ -21,6 +22,7 @@ type Document struct {
 const stopwords = `a an and are as at be by for from has he in is it its of on that the to was were will with`
 
 
+//LoadStopWords creates a hash map of stop words.
 func LoadStopWords() map[string]bool {
     /*file, err := os.Open("vsr/stop_words.txt")
     if err != nil {
@@ -41,6 +43,8 @@ func LoadStopWords() map[string]bool {
     return stopWords
 }
 
+//HashMapVector loops through every term of a document and add terms that
+//are not stop words to a vector and returns the vector.
 func (doc *Document) HashMapVector() *Vector {
     stopWords := LoadStopWords()
     if (doc.StringText != "") {
