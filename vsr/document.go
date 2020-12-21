@@ -9,6 +9,10 @@ import (
     "strings"
 )
 
+type Doc interface {
+    HashMapVector() *Vector
+}
+
 //Document represents a file document.
 type Document struct {
     //FilePath must be the absolute path
@@ -47,7 +51,7 @@ func LoadStopWords() map[string]bool {
 //are not stop words to a vector and returns the vector.
 func (doc *Document) HashMapVector() *Vector {
     stopWords := LoadStopWords()
-    if (doc.StringText != "") {
+    if (doc.StringText == "") {
         file, err := os.Open(doc.FilePath)
         if err != nil {
             panic(err)
