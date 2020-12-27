@@ -9,19 +9,63 @@ import (
     "strings"
 )
 
-type Doc interface {
+//Document represents methods that are implemented by various document types.
+type Document interface {
     HashMapVector() *Vector
 }
 
-//Document represents a file document.
-type Document struct {
+//FileDocument represents a file document.
+type FileDocument struct {
     //FilePath must be the absolute path
     FilePath string 
-    StringText string
     VectorLength float64
     //StopWords map[string]bool
     SimilarityScore float64
 }
+
+
+//HashMapVector loops through every term of a document and add terms that
+//are not stop words to a vector and returns the vector.
+func (doc *FileDocument) HashMapVector() *Vector {
+    stopWords := LoadStopWords()
+    file, err := os.Open(doc.FilePath)
+    if err != nil {
+        panic(err)
+    }
+    vector := Vector{make(map[string]float64)}
+    scanner := bufio.NewScanner(file)
+    for scanner.Scan() {
+        token := scanner.Text()
+        strings.ToLower(token)
+        if !stopWords[token] {
+            vector.Add(token)
+        }
+    }
+    file.Close() 
+    return &vector
+}
+
+//QueryDocument document represents a Document constructed from a string query
+type QueryDocument struct {
+    Query string
+    VectorLength float64
+    SimilarityScore float64
+}
+
+//HashMapVector loops through every term of a query and add terms that
+//are not stop words to a vector and returns the vector.
+func (doc *QueryDocument) HashMapVector() *Vector {
+    stopWords := LoadStopWords()
+    vector := Vector{make(map[string]float64)}
+    terms := strings.Fields(doc.Query) 
+    for _, term := range terms {
+        if !stopWords[term] {
+            vector.Add(term)
+        }
+    }
+    return &vector
+}
+
 
 const stopwords = `a an and are as at be by for from has he in is it its of on that the to was were will with`
 
@@ -47,36 +91,3 @@ func LoadStopWords() map[string]bool {
     return stopWords
 }
 
-//HashMapVector loops through every term of a document and add terms that
-//are not stop words to a vector and returns the vector.
-func (doc *Document) HashMapVector() *Vector {
-    stopWords := LoadStopWords()
-    if (doc.StringText == "") {
-        file, err := os.Open(doc.FilePath)
-        if err != nil {
-            panic(err)
-        }
-        vector := Vector{make(map[string]float64)}
-        scanner := bufio.NewScanner(file)
-        for scanner.Scan() {
-            token := scanner.Text()
-            strings.ToLower(token)
-            if !stopWords[token] {
-                vector.Add(token)
-            }
-        }
-        file.Close() 
-        return &vector
-    } else {
-        vector := Vector{make(map[string]float64)}
-        terms := strings.Fields(doc.StringText) 
-        for _, term := range terms {
-            vector.Add(term)
-        }
-        return &vector
-    }
-}
-
-func (doc *Document) Test() {
-    fmt.Println(doc.FilePath)
-}
