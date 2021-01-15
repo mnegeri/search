@@ -46,6 +46,7 @@ func (index *InvertedIndex) indexDoc(doc Document) {
         } 
         data.InstanceList = append(data.InstanceList, TermInstance{doc, count})
     }
+    index.computeIDFandVectorLength()
 }
 
 //computeIDFandVectorLength computes the tf-idf weigth for every terms, and
