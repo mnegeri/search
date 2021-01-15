@@ -24,9 +24,10 @@ func (index *InvertedIndex) ProcessDocuments() {
     if (err != nil) {
         panic(err) 
     }
+    //loop through each file document in the directory
     for _, file := range files {
         fmt.Println(file.Name())
-        doc := Document{filepath.Join(index.Dir, file.Name()), "",  0, 0}
+        doc := &FileDocument{FilePath: filepath.Join(index.Dir, file.Name())}
         //vector := doc.HashMapVector()
         index.indexDoc(doc)
     } 
@@ -60,7 +61,8 @@ func (index *InvertedIndex) computeIDFandVectorLength() {
             data.Idf = idf
             //update VectorLength of the document in which this term occurs in by (idf * count)^2
             for _, instance := range data.InstanceList {
-                instance.Doc.VectorLength += math.Pow(idf * float64(instance.Count), 2)
+                instance.Doc.SetSimilarityScore(instance.Doc.GetVectorLength() + math.Pow(idf * float64(instance.Count), 2))
+                //instance.Doc.VectorLength += math.Pow(idf * float64(instance.Count), 2)
             }
         } else {
             //if idf is 0, remove term from the inverted index
@@ -70,14 +72,15 @@ func (index *InvertedIndex) computeIDFandVectorLength() {
     //finish the computation of document vector length by taking the 
     //square root of the value in VectorLength
     for i, doc := range index.IndexedDocs { 
-        index.IndexedDocs[i].VectorLength = math.Sqrt(doc.VectorLength)
+        //index.IndexedDocs[i].VectorLength = math.Sqrt(doc.VectorLength)
+        index.IndexedDocs[i].SetVectorLength(math.Sqrt(doc.GetVectorLength()))
     }
 }
 
 
 //RetrieveDocs takes a query and return an array of documents in the 
 //order of their relevance.
-func (index *InvertedIndex) RetrieveDocs(query *Document) []Document {
+func (index *InvertedIndex) RetrieveDocs(query QueryDocument) []Document {
     queryVector := query.HashMapVector()
     //hashmap to store the documents that are retrieved and their partially accumulated
     //scores(cosine similarity)
@@ -90,12 +93,13 @@ func (index *InvertedIndex) RetrieveDocs(query *Document) []Document {
     result := make([]Document, 0)
 
     for doc, value := range retrievals {
+        //doc.SimilarityScore = value / (queryLength * doc.VectorLength) 
         //normalize similarity score
-        doc.SimilarityScore = value / (queryLength * doc.VectorLength) 
+        doc.SetSimilarityScore(value / (queryLength * doc.GetVectorLength()))
         result = append(result, doc) 
     }
     sort.Slice(result, func(i, j int) bool {
-        return result[i].SimilarityScore < result[j].SimilarityScore
+        return result[i].GetSimilarityScore() < result[j].GetSimilarityScore()
     })
     return result
 }
@@ -120,6 +124,6 @@ func (index *InvertedIndex) addTermToIndex(term string, retrievals map[Document]
 
 func PrintResults(results []Document) {
     for _, doc := range results {
-        fmt.Println(doc.FilePath)
+        fmt.Println(doc.GetName())
     }
 }

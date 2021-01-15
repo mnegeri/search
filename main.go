@@ -9,6 +9,7 @@ import (
 )
 
 func main() {
+    //vsr.LoadStopWords()
     /* fmt.Println("test")
     doc := vsr.Document{"hello", 0, make(map[string]bool)}
     doc.LoadStopWords()
@@ -22,7 +23,7 @@ func main() {
     for cont {
         fmt.Println("Enter search query: ")
         query, _ := reader.ReadString('\n')
-        results := index.RetrieveDocs(&vsr.Document{"", query, 0, 0})
+        results := index.RetrieveDocs(vsr.QueryDocument{query, 0, 0})
         vsr.PrintResults(results)
         fmt.Println("Press y to continue: ")
         resp, _ := reader.ReadString('\n')
