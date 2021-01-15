@@ -124,9 +124,6 @@ func (doc *QueryDocument) SetSimilarityScore(val float64) {
 } */
 
 
-//const stopwords = `a an and are as at be by for from has he in is it its of on that the to was were will with`
-
-
 //LoadStopWords creates a hash map of stop words.
 func LoadStopWords() map[string]bool {
     path, err := os.Getwd()
@@ -158,4 +155,6 @@ func LoadStopWords() map[string]bool {
     } */
     return stopWords
 }
+
+//const stopwords = `a an and are as at be by for from has he in is it its of on that the to was were will with`
 
